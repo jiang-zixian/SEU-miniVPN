@@ -1,16 +1,19 @@
+CERT_PATH := ./demoCA
+VOLUMES_PATH := ./volumes
+
 cert:
 	cd demoCA
-	touch ./demoCA/index.txt ./demoCA/serial
-	echo 1000 > ./demoCA/serial
-	openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -keyout ./demoCA/ca.key -out ./demoCA/ca.crt -subj "/CN=www.modelCA.com/O=Model CA LTD./C=CN/ST=NJ/L=SEU" -passout pass:dees
-	openssl req -newkey rsa:2048 -sha256 -keyout ./demoCA/vpn.key -out ./demoCA/vpn.csr -subj "/CN=vpnlabserver.com/O=Model CA LTD./C=CN/ST=NJ/L=SEU" -passout pass:dees
-	openssl ca -config myCA_openssl.cnf -policy policy_anything -md sha256 -days 3650 -in ./demoCA/vpn.csr -out ./demoCA/vpn.crt -batch -cert ./demoCA/ca.crt -keyfile ./demoCA/ca.key
-	cp ./demoCA/vpn.crt ./volumes/server-certs/
-	cp ./demoCA/vpn.key ./volumes/server-certs/
-	cp ./demoCA/ca.crt ./volumes/client-certs/
-	openssl x509 -in ./demoCA/ca.crt -noout -subject_hash
-	ln -s ./demoCA/ca.crt eaa14a05.0
-	mv eaa14a05.0 ./volumes/client-certs/
+	touch $(CERT_PATH)/index.txt $(CERT_PATH)/serial
+	echo 1000 > $(CERT_PATH)/serial
+	openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -keyout $(CERT_PATH)/ca.key -out $(CERT_PATH)/ca.crt -subj "/CN=www.modelCA.com/O=Model CA LTD./C=CN/ST=NJ/L=SEU" -passout pass:dees
+	openssl req -newkey rsa:2048 -sha256 -keyout $(CERT_PATH)/vpn.key -out $(CERT_PATH)/vpn.csr -subj "/CN=vpnlabserver.com/O=Model CA LTD./C=CN/ST=NJ/L=SEU" -passout pass:dees
+	openssl ca -config myCA_openssl.cnf -policy policy_anything -md sha256 -days 3650 -in $(CERT_PATH)/vpn.csr -out $(CERT_PATH)/vpn.crt -batch -cert $(CERT_PATH)/ca.crt -keyfile $(CERT_PATH)/ca.key
+	cp $(CERT_PATH)/vpn.crt $(VOLUMES_PATH)/server-certs/
+	cp $(CERT_PATH)/vpn.key $(VOLUMES_PATH)/server-certs/
+	cp $(CERT_PATH)/ca.crt $(VOLUMES_PATH)/client-certs/
+	openssl x509 -in $(CERT_PATH)/ca.crt -noout -subject_hash
+	ln -s $(CERT_PATH)/ca.crt eaa14a05.0
+	mv eaa14a05.0 $(VOLUMES_PATH)/client-certs/
 
 up:
 	docker compose up -d
@@ -20,7 +23,7 @@ down:
 	docker compose down
 
 clean:
-	rm ./volumes/client-certs/**
-	rm ./volumes/server-certs/**
-	rm ./demoCA/**
+	rm $(VOLUMES_PATH)/client-certs/**
+	rm $(VOLUMES_PATH)/server-certs/**
+	rm $(CERT_PATH)/**
 

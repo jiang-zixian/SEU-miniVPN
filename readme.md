@@ -9,13 +9,19 @@
 用户名：seed
 密码：dees
 
+## 代码目录
+demoCA用来存证书相关的文件
+volumes是和docker的共享文件夹
+myCA_openssl.cnf是证书的配置文件
+Makefile文件是自动化脚本，具体命令什么意思可以问chat
+
 ## 创建证书
 项目根目录下执行如下：
 ```
-make all
+make cert
 ```
 
-注意，make all之前记得make clean一下，如果make clean报错没有对应文件，那就不用继续clean了
+注意，make cert之前记得make clean一下，如果make clean报错没有对应文件，那就不用继续clean了
 
 
 ## docker启动
