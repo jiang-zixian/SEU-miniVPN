@@ -1,5 +1,5 @@
 ## 整体架构
-![alt text](image-1.png)
+![alt text](readme_img/image-1.png)
 
 *to xpl:这个图要重画，IP地址按照docker-compose.yml文件中的设置来*
 
@@ -55,7 +55,7 @@ make clean
 ## 常见问题
 1. 如果启动docker的时候发生如下问题：
 
-    ![alt text](image.png)
+    ![alt text](readme_img/image.png)
 
     在docker-compose.yml文件中统一将`192.168.60`换成其他网段即可
 
