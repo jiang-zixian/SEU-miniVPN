@@ -6,13 +6,18 @@
 注意：以下命令建议在root身份执行。用Makefile文件写了脚本，具体命令可见Makefile中
 
 默认证书：
+
 用户名：seed
+
 密码：dees
 
 ## 代码目录
 demoCA用来存证书相关的文件
+
 volumes是和docker的共享文件夹
+
 myCA_openssl.cnf是证书的配置文件
+
 Makefile文件是自动化脚本，具体命令什么意思可以问chat
 
 ## 创建证书
