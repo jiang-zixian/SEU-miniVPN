@@ -59,9 +59,9 @@ Get the interface name
 ifname = ifname_bytes.decode('UTF-8')[:16].strip("\x00") # get the interface name
 print("Interface Name: {}".format(ifname)) # print the interface name
 
-os.system("ip addr add 192.168.53.5/24 dev {}".format(ifname)) # set the route
+os.system("ip addr add 192.168.70.5/24 dev {}".format(ifname)) # set the route
 os.system("ip link set dev {} up".format(ifname)) # set the interface up
-os.system("ip route add 192.168.60.0/24 dev {} via 192.168.53.5".format(ifname)) # set the route
+os.system("ip route add 192.168.60.0/24 dev {} via 192.168.70.5".format(ifname)) # set the route
 
 print(">>> Preparation done.")
 
@@ -71,8 +71,8 @@ Login
 usrname = input("Input username: ") # input the username
 passwd = getpass.getpass("Input password: ") # input the password
 client_auth = IP()
-client_auth.src = '192.168.53.5' # set the source IP address
-client_auth.dst = '192.168.53.1' # set the destination IP address
+client_auth.src = '192.168.70.5' # set the source IP address
+client_auth.dst = '192.168.70.1' # set the destination IP address
 ssock.send(bytes(client_auth/bytes(usrname.encode()))) # send the username
 ssock.send(bytes(client_auth/bytes(passwd.encode()))) # send the password
 

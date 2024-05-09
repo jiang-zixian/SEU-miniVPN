@@ -30,7 +30,7 @@ print("Interface Name: {}".format(ifname))  # print the interface name
 '''
 Set route
 '''
-os.system("ip addr add 192.168.53.1/24 dev {}".format(ifname))  # set the route
+os.system("ip addr add 192.168.70.1/24 dev {}".format(ifname))  # set the route
 os.system("ip link set dev {} up".format(ifname))  # set the interface up
 
 '''
@@ -90,7 +90,7 @@ while True:
             passwd = b''  # create the password
 
             re_client_auth = IP()  # create the packet to reply the client authentication
-            re_client_auth.src = '192.168.53.1'  # set the source IP address
+            re_client_auth.src = '192.168.70.1'  # set the source IP address
 
             while (usrname == b'') or (passwd == b''):  # while some data is not received
                 # select the connection inputs
@@ -130,6 +130,11 @@ while True:
             packet = os.read(tun, 2048)  # read the packet
             pkt = IP(packet)  # create the packet
             print("=== TUN:\t{}\t-->\t{}\t===".format(pkt.src, pkt.dst))
+            
+            # Check if the destination IP does not start with '10'
+            if not pkt.dst.startswith('10'):
+                continue  # Skip sending the packet and continue to the next iteration
+                
             # send the packet to the destination
             con_dict[pkt.dst].sendall(packet)
         else:  # if the input is the connection
