@@ -52,6 +52,17 @@ make up之后会看到所有docker的信息，用以下命令启动对应docker
 ## 测试
 两边都打开之后，如果在client1运行了python代码，在host docker中ping 10.0.3.5(client1)，即可ping 通，因为vpn server转发了，但如果client1端关闭，ping不通。
 
+server:
+![alt text](readme_img/image-2.png)
+
+client1:
+![alt text](readme_img/image-4.png)
+
+host ping结果：
+![alt text](readme_img/image-3.png)
+
+
+
 ## docker关机
 ```
 make down
