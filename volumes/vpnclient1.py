@@ -20,7 +20,7 @@ cadir = '/volumes/client-certs' # directory of the client certificates
 '''
 Set up the TLS context
 '''
-context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT) # create the SSL context
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT) # create the TLS context
 
 context.load_verify_locations(capath=cadir) # load the client certificates
 context.verify_mode = ssl.CERT_REQUIRED # verify the client certificates
@@ -33,13 +33,13 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create the socket
 sock.connect((hostname, port)) # connect to the server
 
 '''
-Add the TLS
+Add the SSL  handshake
 '''
 try:
     ssock = context.wrap_socket( # wrap the socket with TLS
         sock, server_hostname=hostname, do_handshake_on_connect=False)
-    ssock.do_handshake() # do the TLS handshake
-except: # if the TLS handshake fails
+    ssock.do_handshake() # do the SSL handshake
+except: # if the SSL handshake fails
     print(">>> Certificate failed") # print error message
     ssock.shutdown(socket.SHUT_RDWR) # shutdown the socket
     ssock.close() # close the socket
@@ -61,7 +61,7 @@ print("Interface Name: {}".format(ifname)) # print the interface name
 
 os.system("ip addr add 192.168.70.3/24 dev {}".format(ifname)) # set the route
 os.system("ip link set dev {} up".format(ifname)) # set the interface up
-os.system("ip route add 192.168.60.0/24 dev {} via 192.168.70.3".format(ifname)) # set the route
+os.system("ip route add 192.168.70.0/24 dev {} via 192.168.70.3".format(ifname)) # set the route
 
 print(">>> Preparation done.")
 

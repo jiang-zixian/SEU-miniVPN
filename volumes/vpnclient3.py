@@ -61,7 +61,7 @@ print("Interface Name: {}".format(ifname)) # print the interface name
 
 os.system("ip addr add 192.168.70.5/24 dev {}".format(ifname)) # set the route
 os.system("ip link set dev {} up".format(ifname)) # set the interface up
-os.system("ip route add 192.168.60.0/24 dev {} via 192.168.70.5".format(ifname)) # set the route
+os.system("ip route add 192.168.70.0/24 dev {} via 192.168.70.5".format(ifname)) # set the route
 
 print(">>> Preparation done.")
 

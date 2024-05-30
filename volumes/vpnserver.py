@@ -15,6 +15,7 @@ IFF_NO_PI = 0x1000  # don't pass on packet info
 '''
 Create the tun interface
 '''
+# Create a tun interface, which is a virtual network interface that is used to transfer packets between the VPN server and the client
 tun = os.open("/dev/net/tun", os.O_RDWR)  # open the tun device
 # create the control block
 ifr = struct.pack('16sH', b'tun%d', IFF_TUN | IFF_NO_PI)
@@ -30,6 +31,7 @@ print("Interface Name: {}".format(ifname))  # print the interface name
 '''
 Set route
 '''
+# Set up a route to assign the 192.168.70.1/24 network segment to the tun interface.
 os.system("ip addr add 192.168.70.1/24 dev {}".format(ifname))  # set the route
 os.system("ip link set dev {} up".format(ifname))  # set the interface up
 
@@ -40,7 +42,7 @@ SERVER_CERT = "/volumes/server-certs/vpn.crt"  # server certificate
 SERVER_PRIVATE = "/volumes/server-certs/vpn.key"  # server private key
 
 '''
-Set SSL
+Set TLS
 '''
 context_srv = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)  # create the SSL context
 context_srv.num_tickets = 0  # disable session tickets
@@ -76,7 +78,7 @@ while True:
             '''
             con, addr = sock.accept()  # accept the connection
             IPa, _ = addr  # get the IP address
-            # wrap the connection with SSL
+            # wrap the connection with TLS
             con = context_srv.wrap_socket(con, server_side=True)
             con.setblocking(0)  # set the socket to non-blocking
 

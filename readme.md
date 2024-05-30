@@ -1,7 +1,16 @@
-## 整体架构
-![alt text](readme_img/image-1.png)
+## 常用命令
+关闭所有docker
+docker stop $(docker ps -aq)
 
-*to xpl:这个图要重画，IP地址按照docker-compose.yml文件中的设置来*
+删除所有docker
+docker rm $(docker ps -aq)
+
+查看所有
+docker ps -a
+
+## 整体架构
+![alt text](docker.png)
+
 
 注意：以下命令建议在root身份执行。用Makefile文件写了脚本，具体命令可见Makefile中
 
@@ -86,3 +95,23 @@ make clean
 ## 指导手册
 
 感谢这位佬的[手册](https://blog.csdn.net/qq_39678161/article/details/126627332)
+
+
+mkdir demoCA
+cd demoCA
+mkdir certs crl newcerts
+touch index.txt serial
+echo 1000 > serial
+cd ..
+cp /usr/lib/ssl/openssl.cnf myCA_openssl.cnf
+openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -keyout ca.key -out ca.crt -subj "/CN=www.modelCA.com/O=Model CA LTD./C=CN/ST=NJ/L=SEU" -passout pass:dees
+openssl req -newkey rsa:2048 -sha256 -keyout vpn.key -out vpn.csr -subj "/CN=vpnlabserver.com/O=Model CA LTD./C=CN/ST=NJ/L=SEU" -passout pass:dees
+openssl ca -config myCA_openssl.cnf -policy policy_anything -md sha256 -days 3650 -in vpn.csr -out vpn.crt -batch -cert ca.crt -keyfile ca.key
+mv ./vpn.crt ./volumes/server-certs/
+
+mv ./ca* ./volumes/client-certs/
+cd volumes/client-certs/
+openssl x509 -in ca.crt -noout -subject_hash
+ln -s ca.crt 112bc731.0
+
+
